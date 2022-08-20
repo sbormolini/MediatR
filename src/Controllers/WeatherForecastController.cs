@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MediatRDemo.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api")]
 public class WeatherForecastController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -33,5 +33,14 @@ public class WeatherForecastController : ControllerBase
         var notification = new WeatherWarningNotification(warning.Message);
         await _mediator.Publish(notification);
         return Ok(notification);
+    }
+
+    [HttpGet("weather-updates/{city}")]
+    public IAsyncEnumerable<WeatherForecast> WeatherUpdates(
+        [FromRoute] string city, 
+        CancellationToken cancellationToken)
+    {
+        var streamRequest = new WeatherUpdateStreamRequest(city);
+        return _mediator.CreateStream(streamRequest, cancellationToken);
     }
 }
