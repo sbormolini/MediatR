@@ -29,7 +29,7 @@ public class GetWeatherForecastHandler :
         {
             Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(0, Summaries.Length)]
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         }).ToArray();
     }
 }

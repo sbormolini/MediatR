@@ -26,4 +26,12 @@ public class WeatherForecastController : ControllerBase
         var response = await _mediator.Send(request);
         return Ok(response);
     }
+
+    [HttpPost("weather-warning")]
+    public async Task<IActionResult> CreateWarning([FromBody] WeatherWarning warning)
+    {
+        var notification = new WeatherWarningNotification(warning.Message);
+        await _mediator.Publish(notification);
+        return Ok(notification);
+    }
 }
